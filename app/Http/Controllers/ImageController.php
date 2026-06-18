@@ -290,45 +290,5 @@ class ImageController extends Controller
 		}
 
 	}
-
-	public function demoGrid()
-	{
-		$id = (int)19;
-		$image_data = ImageModel::find($id);
-
-		$file_path = public_path() . $image_data->image;
-
-		$img = Image::read($file_path);
-		$relative_path = '/uploads/' . $id . '.png';
-
-		$img->greyscale();
-		$new_file_path = public_path() . $relative_path;
-		$img->save($new_file_path);
-
-		$imageGrid = new ImageGrid (
-			$new_file_path, $image_data->divide_n, $image_data->divide_m
-		);
-
-		$imageGrid->addGridToImage();
-		$file_path_with_grid = '/uploads/' . $id . '_grid.png';
-		$imageGrid->saveImageToFile(public_path() . $file_path_with_grid);
-
-		$file_path_crop = '/uploads/' . $id . '_grid_crop.png';
-		$crop = $imageGrid->getImageByPosition(2, 2);
-		$imageGrid->saveImageToFile(public_path() . $file_path_crop, $crop);
-
-		$imageCharacteristic = new ImageCharacteristic();
-
-		$imageCharacteristic->setImage($crop);
-
-		$intensity = $imageCharacteristic->getIntensity();
-
-		$data = [];
-		$data['image'] = $image_data;
-		$data['image_edit'] = $relative_path;
-		$data['image_grid'] = $file_path_with_grid;
-		$data['image_crop'] = $file_path_crop;
-		exit;
-
-	}
 }
+

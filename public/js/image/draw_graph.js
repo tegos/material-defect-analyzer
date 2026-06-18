@@ -35,7 +35,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 scheduleChart(() => initChart(element_id, data));
-                console.log(element_id, data);
             }
         });
 
@@ -59,7 +58,6 @@ $(document).ready(function () {
             },
             success: function (data) {
                 scheduleChart(() => initChartGroup(element_id, data));
-                console.log(element_id, data);
             }
         });
 

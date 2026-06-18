@@ -37,8 +37,6 @@ class Matrix
 
         $num = count($distanceMatrix);
         $elementInGroup = (int)($num / $numOfGroup);
-        //dd($numOfGroup);
-        //dd($elementInGroup);
 
         $countIteration = 1;
         while (count($group) < (($numOfGroup - 1) * $elementInGroup)) {
@@ -84,8 +82,6 @@ class Matrix
             }
         }
 
-        //dd($group);
-
         $lastGroup = [];
         for ($i = 0; $i < $num; $i++) {
             if (!in_array($i, $group)) {
@@ -113,13 +109,6 @@ class Matrix
             $chunk[] = $diff;
         }
 
-        //dd(count($chunk), count($group));
-        //dd($usedElement);
-        //dd($chunk);
-        //dd($group);
-        //dd($position);
-        //dd($localMins);
-        //dd($distanceMatrix);
         return $chunk;
 
     }
@@ -133,11 +122,8 @@ class Matrix
                 $i = $dataGraphIdentification[$group][0];
                 $j = $dataGraphIdentification[$group][1];
                 $distances[$indexKey] += $distanceMatrix[$i][$j];
-                //var_dump('i', $i, 'j', $j);
-                //var_dump($distanceMatrix[$i][$j]);
             }
         }
-        //dd($distances);
         return $distances;
     }
 
