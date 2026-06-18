@@ -25,7 +25,7 @@
                 <div class="row uniform">
                     <div class="12u$">
 							<span class="image fit">
-								<img src="{{$image->image}}" alt=""/>
+								<img src="{{$image_url}}" alt=""/>
 							</span>
                     </div>
 

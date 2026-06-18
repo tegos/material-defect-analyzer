@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use App\Image as ImageModel;
 use App\Image\ImageCharacteristic;
+use Illuminate\Support\Facades\Storage;
 
 class ImageIntensity extends Controller
 {
@@ -20,9 +21,9 @@ class ImageIntensity extends Controller
 		$algorithmData = $algorithms[$algorithm];
 
 		$imageCharacteristic = new ImageCharacteristic();
-		$file_path_crop = "/uploads/{$id}_{$m}_{$n}_grid_crop.png";
+		$file_path_crop = "uploads/{$id}_{$m}_{$n}_grid_crop.png";
 
-		$imageCharacteristic->setImageByPath(public_path() . $file_path_crop);
+		$imageCharacteristic->setImageByPath(Storage::disk('public')->path($file_path_crop));
 
 		// based data on selected feature
 		if (is_callable([$imageCharacteristic, $algorithmData['feature_method']])) {

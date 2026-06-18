@@ -8,6 +8,7 @@ use App\Image\ImageGrid;
 use App\Image\Matrix;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
 class ImageController extends Controller
@@ -19,14 +20,14 @@ class ImageController extends Controller
 
 		$algorithms = ImageGrid::getAlgorithms();
 
-		$file_path = public_path() . $image_data->image;
+		$file_path = Storage::disk('public')->path($image_data->image);
 
 		$img = Image::read($file_path);
-		$relative_path = '/uploads/' . $id . '.png';
+		$relative_path = 'uploads/' . $id . '.png';
 
 		$img->greyscale();
 
-		$new_file_path = public_path() . $relative_path;
+		$new_file_path = Storage::disk('public')->path($relative_path);
 		$img->save($new_file_path);
 
 		$imageGrid = new ImageGrid (
@@ -43,8 +44,8 @@ class ImageController extends Controller
 
 		$imageGrid->addGridToImage();
 
-		$file_path_with_grid = '/uploads/' . $id . '_grid.png';
-		$imageGrid->saveImageToFile(public_path() . $file_path_with_grid);
+		$file_path_with_grid = 'uploads/' . $id . '_grid.png';
+		$imageGrid->saveImageToFile(Storage::disk('public')->path($file_path_with_grid));
 
 		// divided images
 		$n = $image_data->divide_n; // cols
@@ -59,12 +60,12 @@ class ImageController extends Controller
 
 		for ($i = 0; $i < $n; $i++) {
 			for ($j = 0; $j < $m; $j++) {
-				$file_path_crop = "/uploads/{$id}_{$j}_{$i}_grid_crop.png";
+				$file_path_crop = "uploads/{$id}_{$j}_{$i}_grid_crop.png";
 				$crop = $originalImage->getImageByPosition($j, $i);
-				$originalImage->saveImageToFile(public_path() . $file_path_crop, $crop);
+				$originalImage->saveImageToFile(Storage::disk('public')->path($file_path_crop), $crop);
 
 				$cropped_images["{$j}x{$i}"] = [
-					'image' => $file_path_crop,
+					'image' => '/storage/' . $file_path_crop,
 					'm' => $j,
 					'n' => $i,
 					'position' => "{$j}_{$i}"
@@ -83,9 +84,9 @@ class ImageController extends Controller
 		for ($i = 0; $i < $n; $i++) {
 			for ($j = 0; $j < $m; $j++) {
 				$imageCharacteristic = new ImageCharacteristic();
-				$file_path_crop = "/uploads/{$id}_{$j}_{$i}_grid_crop.png";
+				$file_path_crop = "uploads/{$id}_{$j}_{$i}_grid_crop.png";
 
-				$imageCharacteristic->setImageByPath(public_path() . $file_path_crop);
+				$imageCharacteristic->setImageByPath(Storage::disk('public')->path($file_path_crop));
 
 				// based data on selected feature
 				if (is_callable([$imageCharacteristic, $algorithmData['feature_method']])) {
@@ -230,9 +231,10 @@ class ImageController extends Controller
 
 		$data = [];
 		$data['image'] = $image_data;
+		$data['image_url'] = '/storage/' . $image_data->image;
 		$data['algorithmData'] = $algorithmData;
-		$data['image_edit'] = $relative_path;
-		$data['image_grid'] = $file_path_with_grid;
+		$data['image_edit'] = '/storage/' . $relative_path;
+		$data['image_grid'] = '/storage/' . $file_path_with_grid;
 		$data['cropped_images'] = $cropped_images;
 
 		$data['n'] = $image_data->divide_n; // cols
@@ -267,7 +269,7 @@ class ImageController extends Controller
 	{
 		if ($request->hasFile('image')) {
 			$file = $request->file('image');
-			$file->move('uploads', $file->getClientOriginalName());
+			Storage::disk('public')->putFileAs('uploads', $file, $file->getClientOriginalName());
 			$divide_n = (int)$request->input('divide_n', 3);
 			$divide_m = (int)$request->input('divide_m', 3);
 			$threshold = (int)$request->input('threshold', 255);
@@ -276,7 +278,7 @@ class ImageController extends Controller
 
 			$image_model = new ImageModel;
 
-			$image_model->image = '/uploads/' . $file->getClientOriginalName();
+			$image_model->image = 'uploads/' . $file->getClientOriginalName();
 			$image_model->divide_n = $divide_n;
 			$image_model->divide_m = $divide_m;
 			$image_model->threshold = $threshold;
