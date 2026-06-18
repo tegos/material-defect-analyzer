@@ -3,7 +3,7 @@
     <div class="inner">
         <ul class="menu">
             <li>&copy; Михавко Іван</li>
-            <li>Web Defect</li>
+            <li>Аналіз дефектів матеріалів</li>
             <li>
                 <?= date('Y'); ?>
             </li>
