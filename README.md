@@ -1,5 +1,7 @@
 # Material Defect Analyzer
 
+[![CI](https://github.com/tegos/material-defect-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/tegos/material-defect-analyzer/actions/workflows/ci.yml)
+
 A web application that detects and classifies defective regions in material surface images using a custom pixel-level feature extraction and distance-matrix clustering algorithm.
 
 ---
@@ -62,12 +64,12 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 
 | Layer | Technology |
 |---|---|
-| Backend framework | Laravel 5.4 (PHP >= 5.6) |
-| Image processing | PHP GD extension, Intervention Image 2.x |
-| Database | MySQL / SQLite via Laravel Eloquent |
+| Backend | PHP 8.4, Laravel 12 |
+| Image processing | PHP GD, Intervention Image 3.x |
+| Database | MySQL 8.0 |
 | Charts | Highcharts (JavaScript) |
-| Asset pipeline | Laravel Mix (webpack) |
-| Frontend | Blade templates, HTML/CSS, JavaScript |
+| Frontend | Blade templates, jQuery |
+| Runtime | Docker Compose |
 
 ---
 
@@ -91,10 +93,7 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 
 ### Requirements
 
-- PHP >= 5.6 with the `gd` and `json` extensions enabled
-- Composer
-- MySQL or SQLite
-- Node.js and npm (for front-end assets)
+- Docker and Docker Compose
 
 ### Installation
 
@@ -102,52 +101,20 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 git clone https://github.com/tegos/material-defect-analyzer.git
 cd material-defect-analyzer
 
-# Install PHP dependencies
-composer install
-
-# Copy the environment file and generate the application key
 cp .env.example .env
-php artisan key:generate
+docker compose up -d
+docker compose exec app php artisan key:generate
 ```
 
-Edit `.env` to point at your database:
+The container entrypoint runs `storage:link` and `migrate` automatically on startup.
 
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=defect
-DB_USERNAME=root
-DB_PASSWORD=
-```
+Open `http://localhost:8080` in your browser.
 
-Run the migrations:
+### Tests
 
 ```bash
-php artisan migrate
+docker compose exec app php artisan test
 ```
-
-Make the uploads directory writable:
-
-```bash
-mkdir -p public/uploads
-chmod -R 775 public/uploads
-```
-
-Build front-end assets:
-
-```bash
-npm install
-npm run dev
-```
-
-Start the development server:
-
-```bash
-php artisan serve
-```
-
-Open `http://localhost:8000` in your browser.
 
 ---
 
@@ -163,7 +130,7 @@ Open `http://localhost:8000` in your browser.
 
 ## Project History
 
-Built as a university diploma project in 2017.
+Built as a university diploma project in 2017. Upgraded to Laravel 12 / PHP 8.4 in 2026.
 
 ---
 
