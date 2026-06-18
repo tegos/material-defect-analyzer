@@ -6,9 +6,9 @@ use App\Image as ImageModel;
 use App\Image\ImageCharacteristic;
 use App\Image\ImageGrid;
 use App\Image\Matrix;
-use Illuminate\Support\Facades\Input as Input;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ImageController extends Controller
 {
@@ -21,7 +21,7 @@ class ImageController extends Controller
 
 		$file_path = public_path() . $image_data->image;
 
-		$img = Image::make($file_path);
+		$img = Image::read($file_path);
 		$relative_path = '/uploads/' . $id . '.png';
 
 		$img->greyscale();
@@ -263,16 +263,16 @@ class ImageController extends Controller
 
 	}
 
-	public function upload()
+	public function upload(Request $request)
 	{
-		if (Input::hasFile('image')) {
-			$file = Input::file('image');
+		if ($request->hasFile('image')) {
+			$file = $request->file('image');
 			$file->move('uploads', $file->getClientOriginalName());
-			$divide_n = (int)Input::get('divide_n', 3);
-			$divide_m = (int)Input::get('divide_m', 3);
-			$threshold = (int)Input::get('threshold', 255);
-			$algorithm = (int)Input::get('algorithm', 1);
-			$groups = (int)Input::get('groups', 3);
+			$divide_n = (int)$request->input('divide_n', 3);
+			$divide_m = (int)$request->input('divide_m', 3);
+			$threshold = (int)$request->input('threshold', 255);
+			$algorithm = (int)$request->input('algorithm', 1);
+			$groups = (int)$request->input('groups', 3);
 
 			$image_model = new ImageModel;
 
@@ -298,7 +298,7 @@ class ImageController extends Controller
 
 		$file_path = public_path() . $image_data->image;
 
-		$img = Image::make($file_path);
+		$img = Image::read($file_path);
 		$relative_path = '/uploads/' . $id . '.png';
 
 		$img->greyscale();
