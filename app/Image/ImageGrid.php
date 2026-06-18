@@ -112,27 +112,4 @@ class ImageGrid extends AbstractImage
         return $crop;
     }
 
-    /**
-     * Not use
-     * @param $src
-     * @param array $rect
-     * @return resource
-     */
-    public function fixCrop($src, array $rect)
-    {
-        $crop = imagecreatetruecolor($rect['width'], $rect['height']);
-        imagecopy(
-            $crop,
-            $src,
-            0,
-            0,
-            $rect['x'],
-            $rect['y'],
-            $rect['width'],
-            $rect['height']
-        );
-
-        return $crop;
-    }
-
 }
