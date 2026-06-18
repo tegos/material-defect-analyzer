@@ -23,12 +23,12 @@
                 <h2>Зображення</h2>
 
                 <div class="row uniform">
-                    <div class="6u">
+                    <div class="4u">
                         <span class="image fit">
                             <img src="{{$image_url}}" alt=""/>
                         </span>
                     </div>
-                    <div class="6u$">
+                    <div class="4u$">
                         <span class="image fit">
                             <img src="{{$image_grid}}" alt=""/>
                         </span>
@@ -86,67 +86,46 @@
                             <table class="table table-bordered" id="table_groups">
                                 <thead>
                                 <tr>
-                                    @for ($n = 0; $n < $numOfGroup; $n++)
-                                        <th width="{{floor(100/$numOfGroup)}}%" class="text-center">Група {{$n+1}}</th>
-                                    @endfor
+                                    <th class="text-center">Група</th>
+                                    <th class="text-center">Сегменти</th>
+                                    <th class="text-center" style="min-width:140px;">Ймовірність дефекту</th>
+                                    <th class="text-center">Відстань</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                @foreach($groups as $groupData)
-                                    <tr class="tr_num">
-                                        @foreach($groupData as $group)
-                                            @if(isset($group))
-                                                @php ( $image_key = $dataGraphIdentification[$group][1] .'x'. $dataGraphIdentification[$group][0])
-                                                <td class="text-center">
+                                @for ($n = 0; $n < $numOfGroup; $n++)
+                                    <tr>
+                                        <td class="text-center"><b>Група {{$n+1}}</b></td>
+                                        <td>
+                                            <div style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center;">
+                                            @for ($l = 0; $l < $maxElementInGroup; $l++)
+                                                @if(isset($groups[$l][$n]))
+                                                    @php($group = $groups[$l][$n])
+                                                    @php($image_key = $dataGraphIdentification[$group][1] .'x'. $dataGraphIdentification[$group][0])
                                                     @if(isset($cropped_images[$image_key]))
-                                                        <img width="{{floor(100/$numOfGroup)}}%"
-                                                             alt="{{ $cropped_images[$image_key]['image'] }}"
-                                                             src="{{  $cropped_images[$image_key]['image'] }}"/>
-                                                        <div class="content">
-                                                            <pre>{{ $image_key }}</pre>
+                                                        <div style="text-align:center;">
+                                                            <img height="60" alt="{{ $image_key }}"
+                                                                 src="{{ $cropped_images[$image_key]['image'] }}"/>
+                                                            <div style="font-size:0.7em;">{{ $image_key }}</div>
                                                         </div>
                                                     @endif
-                                                </td>
-                                            @else
-                                                <td></td>
-                                            @endif
-                                        @endforeach
-                                    </tr>
-                                @endforeach
-
-                                <tr>
-                                    <td colspan="{{count($totalDistances)}}" class="text-center">Ймовірність дефекту
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    @foreach ($percentDataGroups as $indexKey => $percentDataGroup)
-                                        <td class="text-center">
-                                            <div class="stat-levels">
-                                                <div class="{{$progressBarClasses[$percentDataGroup]}} stat-bar">
-													<span class="stat-bar-rating"
-                                                          style="width: {{$percentDataGroup}}%;">{{$percentDataGroup}}
-                                                        %</span>
-                                                </div>
+                                                @endif
+                                            @endfor
                                             </div>
-                                            <pre><b>{{ $percentDataGroup }}%</b></pre>
                                         </td>
-                                    @endforeach
-                                </tr>
-
-                                <tr>
-                                    <td colspan="{{count($totalDistances)}}" class="text-center">Загальна відстань у
-                                        групі
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    @foreach ($totalDistances as $indexKey => $groupDistance)
-                                        <td class="text-center">{{$groupDistance}}</td>
-                                    @endforeach
-                                </tr>
-
+                                        <td class="text-center">
+                                            @if(isset($percentDataGroups[$n]))
+                                                <div class="stat-levels">
+                                                    <div class="{{$progressBarClasses[$percentDataGroups[$n]]}} stat-bar">
+                                                        <span class="stat-bar-rating" style="width:{{$percentDataGroups[$n]}}%;">{{$percentDataGroups[$n]}}%</span>
+                                                    </div>
+                                                </div>
+                                                <b>{{$percentDataGroups[$n]}}%</b>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">{{$totalDistances[$n] ?? ''}}</td>
+                                    </tr>
+                                @endfor
                                 </tbody>
                             </table>
                         </div>
