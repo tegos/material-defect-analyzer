@@ -16,62 +16,40 @@
 <div id="wrapper">
 
     <!-- Intro -->
-    <section id="intro" class="wrapper style1 fullscreen fade-up">
+    <section id="intro" class="wrapper style1 fullscreen">
         <div class="inner">
             <h1>Пошук дефектів</h1>
             <section>
                 <h2>Зображення</h2>
 
                 <div class="row uniform">
-                    <div class="12u$">
-							<span class="image fit">
-								<img src="{{$image_url}}" alt=""/>
-							</span>
+                    <div class="6u">
+                        <span class="image fit">
+                            <img src="{{$image_url}}" alt=""/>
+                        </span>
                     </div>
-
-                </div>
-
-                <div class="row uniform">
-                    <div class="12u$">
-							<span class="image fit">
-								<img src="{{$image_grid}}" alt=""/>
-							</span>
+                    <div class="6u$">
+                        <span class="image fit">
+                            <img src="{{$image_grid}}" alt=""/>
+                        </span>
                     </div>
                 </div>
 
                 <div class="row uniform">
                     <div class="12u$">
                         <h2>{{$algorithmData['feature']}}</h2>
-                        <div class="table-wrapper">
-                            <table class="table table-bordered" id="table_intensity">
-                                <thead>
-                                <tr>
-                                    <th width="35%" class="text-center">Зображення</th>
-                                    <th width="5%" class="text-center">MxN</th>
-                                    <th width="60%" class="text-center">Графік</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
+                        <div id="table_intensity" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                                 @forelse ($cropped_images as $cropped_image)
-                                    <tr>
-                                        <td class="text-center">
-                                            <img height="200" alt="{{ $cropped_image['image'] }}"
-                                                 src="{{ $cropped_image['image'] }}"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <pre>{{ $cropped_image['m'] }}x{{ $cropped_image['n'] }}</pre>
-                                        </td>
-                                        <td class="text-center column_graph"
-                                            data-position="{{ $cropped_image['position'] }}">
-                                            <div class="graph_intensity"
-                                                 id="graph_intensity_{{ $cropped_image['position'] }}"></div>
-                                        </td>
-                                    </tr>
+                                    <div class="column_graph" data-position="{{ $cropped_image['position'] }}"
+                                         style="text-align:center; border: 1px solid #ddd; padding: 6px;">
+                                        <img height="100" alt="{{ $cropped_image['image'] }}"
+                                             src="{{ $cropped_image['image'] }}"/>
+                                        <div><pre style="margin:4px 0;">{{ $cropped_image['m'] }}x{{ $cropped_image['n'] }}</pre></div>
+                                        <div class="graph_intensity"
+                                             id="graph_intensity_{{ $cropped_image['position'] }}"></div>
+                                    </div>
                                 @empty
                                 @endforelse
-                                </tbody>
-                            </table>
                         </div>
 
                     </div>
@@ -179,23 +157,22 @@
                 <div class="row uniform">
                     <div class="12u$">
                         <h2>Графіки груп</h2>
-                        <div id="groupChart">
+                        <div id="groupChart" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
                             @for ($n = 0; $n < $numOfGroup; $n++)
-                                <div class="row uniform">
-                                    <div class="12u$">
-                                        Група {{$n+1}}
-                                        @php ($image_keys = [])
-                                        @for ($l = 0; $l < $maxElementInGroup; $l++)
-                                            @if(isset($groups[$l][$n]))
-                                                @php($group = $groups[$l][$n])
-                                                @php ($image_key = $dataGraphIdentification[$group][1] .'x'. $dataGraphIdentification[$group][0])
-                                                @php($image_keys[] = $image_key)
-                                            @endif
-                                        @endfor
+                                <div style="text-align:center;">
+                                    <div style="margin-bottom:4px; font-size:0.9em;">Група {{$n+1}}</div>
+                                    @php ($image_keys = [])
+                                    @for ($l = 0; $l < $maxElementInGroup; $l++)
+                                        @if(isset($groups[$l][$n]))
+                                            @php($group = $groups[$l][$n])
+                                            @php ($image_key = $dataGraphIdentification[$group][1] .'x'. $dataGraphIdentification[$group][0])
+                                            @php($image_keys[] = $image_key)
+                                        @endif
+                                    @endfor
 
-                                        <div data-image="{{json_encode($image_keys)}}" class="groupChart"
-                                             id="groupChart_{{$n}}"></div>
-                                    </div>
+                                    {{-- preserve php array building logic exactly --}}
+                                    <div data-image="{{json_encode($image_keys)}}" class="groupChart"
+                                         id="groupChart_{{$n}}"></div>
                                 </div>
                             @endfor
                         </div>
@@ -249,8 +226,10 @@
 
         let featureDataOfImages = '{!!$featureDataOfImages!!}';
     </script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="/js/vendor/highcharts.js"></script>
     <script src="/js/image/draw_graph.js"></script>
+    <script src="/js/image/heatmap.js"></script>
+    <script src="/js/image/sidebar-nav.js"></script>
 @stop
 
 @include('static.footer')
