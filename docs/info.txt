@@ -1,0 +1,30 @@
+Material Defect Analyzer
+========================
+
+Stack
+-----
+PHP 8.4, Laravel 12, MySQL 8.0, Nginx — Docker Compose
+
+Run
+---
+docker compose up -d
+docker compose exec app php artisan migrate
+http://localhost:8080
+
+Tests
+-----
+docker compose exec app php artisan test
+
+Key entry points
+----------------
+routes/web.php              - all routes
+app/Http/Controllers/       - ImageController (main), HomeController
+app/Image/                  - core algorithm (Matrix.php, AbstractImage.php, subtypes)
+resources/views/            - Blade templates
+public/js/image/            - Highcharts chart rendering (draw_graph.js)
+
+Algorithm summary
+-----------------
+Upload image -> greyscale -> divide into N x M grid -> extract feature vector per cell
+(intensity/silhouette by rows or columns) -> pairwise distance matrix -> cluster into K groups
+-> flag groups with >40% defect score concentration -> highlight in red on grid
