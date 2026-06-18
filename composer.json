@@ -19,10 +19,7 @@
     "phpunit/phpunit": "^11.5"
   },
   "autoload": {
-    "classmap": [
-      "database/seeds",
-      "database/factories"
-    ],
+    "classmap": [],
     "psr-4": {
       "App\\": "app/"
     }
