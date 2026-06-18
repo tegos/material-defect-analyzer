@@ -44,7 +44,7 @@ abstract class AbstractImage extends ImageHelper
 
 	public function setImage($image)
 	{
-		if (mb_strtolower(get_resource_type($image)) === 'gd') {
+		if ($image instanceof \GdImage) {
 			$this->image = $image;
 			$this->updateDimension();
 		}
@@ -53,7 +53,7 @@ abstract class AbstractImage extends ImageHelper
 	public function setImageByPath($image_path)
 	{
 		$image = imagecreatefromstring(file_get_contents($image_path));
-		if (mb_strtolower(get_resource_type($image)) === 'gd') {
+		if ($image instanceof \GdImage) {
 			$this->image = $image;
 			$this->updateDimension();
 		}
@@ -87,12 +87,9 @@ abstract class AbstractImage extends ImageHelper
 		imagepng($image, $path, $quality);
 	}
 
-	public function isImage($image)
+	public function isImage($image): bool
 	{
-		if (mb_strtolower(get_resource_type($image)) === 'gd') {
-			return true;
-		}
-		return false;
+		return $image instanceof \GdImage;
 	}
 
 }
