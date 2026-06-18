@@ -1,20 +1,40 @@
+let animationDone = false;
+let pendingCharts = [];
+
+function flushPendingCharts() {
+    if (animationDone) return;
+    animationDone = true;
+    pendingCharts.forEach(fn => fn());
+    pendingCharts = [];
+}
+
+function scheduleChart(fn) {
+    if (animationDone) {
+        fn();
+    } else {
+        pendingCharts.push(fn);
+    }
+}
+
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}
     });
+
+    $('#intro .inner').one('transitionend', flushPendingCharts);
+    setTimeout(flushPendingCharts, 1200);
 
     let graph_columns = $('#table_intensity .column_graph');
     graph_columns.each(function () {
         let t = $(this);
         let position = t.data('position');
         let element_id = 'graph_intensity_' + position;
-        //console.log(position);
 
         $.ajax({
             url: `/ajax/intensity/${imageId}/${position}`,
             dataType: 'json',
             success: function (data) {
-                initChart(element_id, data);
+                scheduleChart(() => initChart(element_id, data));
                 console.log(element_id, data);
             }
         });
@@ -28,7 +48,6 @@ $(document).ready(function () {
         let t = $(this);
         let imageKeys = t.data('image');
         let element_id = t.attr('id');
-        //console.log(position);
 
         $.ajax({
             url: '/ajax/chart',
@@ -39,7 +58,7 @@ $(document).ready(function () {
                 imageKeys
             },
             success: function (data) {
-                initChartGroup(element_id, data);
+                scheduleChart(() => initChartGroup(element_id, data));
                 console.log(element_id, data);
             }
         });
@@ -77,6 +96,7 @@ let initChart = function (element_id = '', series_data = []) {
         ],
         chart: {
             type: 'line',
+            width: null,
             alignTicks: false,
             events: {
                 load: function () {
@@ -122,6 +142,7 @@ let initChartGroup = function (element_id = '', series_data = [], min = 50, max 
         series: series_data,
         chart: {
             type: 'line',
+            width: null,
             alignTicks: false,
             events: {
                 load: function () {
