@@ -45,4 +45,9 @@ RUN mkdir -p /home/${user}/.composer \
 
 WORKDIR /var/www
 
+COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 USER ${user}
+
+ENTRYPOINT ["entrypoint.sh"]
