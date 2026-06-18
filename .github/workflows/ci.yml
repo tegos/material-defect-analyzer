@@ -9,25 +9,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  unit:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          coverage: none
-
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
-
-      - name: Run unit tests
-        run: vendor/bin/phpunit --testsuite "Unit Tests" --testdox
-
-  feature:
+  tests:
     runs-on: ubuntu-latest
 
     services:
@@ -71,5 +53,5 @@ jobs:
       - name: Run migrations
         run: php artisan migrate --force
 
-      - name: Run feature tests
-        run: vendor/bin/phpunit --testsuite "Feature Tests" --testdox
+      - name: Run tests
+        run: vendor/bin/phpunit --testdox
