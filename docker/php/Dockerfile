@@ -3,17 +3,27 @@ FROM php:8.4-fpm-alpine
 ARG user
 ARG uid
 
+# Runtime libs (permanent)
 RUN apk add --no-cache \
     git \
     curl \
-    libpng-dev \
-    libzip-dev \
-    freetype-dev \
-    libjpeg-turbo-dev \
-    oniguruma-dev \
-    icu-dev \
+    libpng \
+    freetype \
+    libjpeg-turbo \
+    libzip \
+    oniguruma \
+    icu \
     zip \
     unzip
+
+# Build deps (temporary virtual group)
+RUN apk add --no-cache --virtual .build-deps \
+    libpng-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libzip-dev \
+    oniguruma-dev \
+    icu-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
@@ -23,8 +33,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
         zip \
         bcmath
 
-RUN apk del freetype-dev libjpeg-turbo-dev libpng-dev \
-    && rm -rf /var/cache/apk/*
+RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
