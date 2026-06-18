@@ -19,13 +19,7 @@ class UploadTest extends TestCase
 
     public function test_upload_with_valid_image_redirects_to_image_page(): void
     {
-        $file = new UploadedFile(
-            base_path('tests/samples/crazing.jpg'),
-            'crazing.jpg',
-            'image/jpeg',
-            null,
-            true
-        );
+        $file = UploadedFile::fake()->image('crazing.jpg');
 
         $response = $this->post('/upload', [
             'image'     => $file,
@@ -41,13 +35,7 @@ class UploadTest extends TestCase
 
     public function test_upload_stores_record_in_database(): void
     {
-        $file = new UploadedFile(
-            base_path('tests/samples/scratches.jpg'),
-            'scratches.jpg',
-            'image/jpeg',
-            null,
-            true
-        );
+        $file = UploadedFile::fake()->image('scratches.jpg');
 
         $this->post('/upload', [
             'image'     => $file,
