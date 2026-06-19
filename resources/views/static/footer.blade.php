@@ -20,7 +20,7 @@
 <script src="/assets/js/main.js"></script>
 
 <script src="/js/script.js"></script>
-<script src="/js/image/first.js"></script>
+<script src="/js/image/upload.js"></script>
 
 @yield('scripts')
 

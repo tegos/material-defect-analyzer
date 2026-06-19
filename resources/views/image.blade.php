@@ -206,7 +206,7 @@
         let featureDataOfImages = '{!!$featureDataOfImages!!}';
     </script>
     <script src="/js/vendor/highcharts.js"></script>
-    <script src="/js/image/draw_graph.js"></script>
+    <script src="/js/image/draw-graph.js"></script>
     <script src="/js/image/heatmap.js"></script>
     <script src="/js/image/sidebar-nav.js"></script>
 @stop
