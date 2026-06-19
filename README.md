@@ -153,7 +153,7 @@ docker compose exec app php artisan test
 The repository includes three surface defect samples from the NEU-CLS dataset to try immediately:
 
 - `assets/samples/crazing.jpg`
-- `assets/samples/pitted_surface.jpg`
+- `assets/samples/pitted-surface.jpg`
 - `assets/samples/scratches.jpg`
 
 Upload any of these on the home page to see a working analysis result.
