@@ -2,14 +2,9 @@
 /public/hot
 /public/storage
 /storage/*.key
-/uploads/
 /public/uploads/
 /vendor
 /.idea
-/.vagrant
-Homestead.json
-Homestead.yaml
-npm-debug.log
 .env
 .phpunit.result.cache
 docs/superpowers/
