@@ -1,9 +1,6 @@
-/**
- * Created by tegos on 16.05.2017.
- */
-
-
-
-$('#loadImage').click(function () {
-    $('#formImage').submit();
-});
+var loadBtn = document.getElementById('loadImage');
+if (loadBtn) {
+    loadBtn.addEventListener('click', function () {
+        document.getElementById('formImage').submit();
+    });
+}

@@ -1,22 +1,18 @@
-/**
- * Created by tegos on 16.05.2017.
- */
-
 function readURL(input) {
-
     if (input.files && input.files[0]) {
-        let reader = new FileReader();
-
+        var reader = new FileReader();
         reader.onload = function (e) {
-            let img = $('#preview_image');
-            img.attr('src', e.target.result);
-            img.show();
+            var img = document.getElementById('preview_image');
+            img.src = e.target.result;
+            img.style.display = 'block';
         };
-
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-$("#imgInp").change(function () {
-    readURL(this);
-});
+var imgInp = document.getElementById('imgInp');
+if (imgInp) {
+    imgInp.addEventListener('change', function () {
+        readURL(this);
+    });
+}
