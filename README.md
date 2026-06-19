@@ -75,7 +75,7 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 
 ## Demo
 
-![Demo](assets/video/hero.mp4)
+<img src="https://raw.githubusercontent.com/tegos/material-defect-analyzer/main/assets/hero.webp" alt="Material Defect Analyzer demo" width="800">
 
 ---
 
