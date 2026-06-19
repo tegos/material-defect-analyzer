@@ -87,8 +87,8 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 | Backend | PHP 8.4, Laravel 12 |
 | Image processing | PHP GD, Intervention Image 3.x |
 | Database | MySQL 8.0 |
-| Charts | Highcharts (JavaScript) |
-| Frontend | Blade templates, jQuery, plain CSS |
+| Charts | Highcharts (CDN) |
+| Frontend | Blade templates, vanilla JS, jQuery (CDN), plain CSS |
 | Reverse proxy | Nginx (Alpine) |
 | Runtime | Docker Compose |
 
