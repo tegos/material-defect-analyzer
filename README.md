@@ -75,7 +75,7 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 
 ## Demo
 
-<video src="assets/video/hero.mp4" autoplay muted loop playsinline width="100%"></video>
+![Demo](assets/video/hero.mp4)
 
 ---
 
