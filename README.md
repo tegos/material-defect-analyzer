@@ -73,6 +73,12 @@ The front end renders Highcharts line charts for any segment on hover, showing t
 
 ---
 
+## Demo
+
+<video src="assets/video/hero.mp4" autoplay muted loop playsinline width="100%"></video>
+
+---
+
 ## Screenshots
 
 <img src="assets/demo/grid-overlay.jpg" alt="Analysis overview with grid overlay" width="100%"/>
